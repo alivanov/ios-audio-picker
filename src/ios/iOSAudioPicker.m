@@ -83,21 +83,9 @@
         for(MPMediaItem *song in allSelectedSongs)
         {
             NSString *title = [song valueForProperty:MPMediaItemPropertyTitle];
-            NSString *albumTitle = [song valueForProperty:MPMediaItemPropertyAlbumTitle];
-            NSString *artist = [song valueForProperty:MPMediaItemPropertyArtist];
             NSURL *songurl = [song valueForProperty:MPMediaItemPropertyAssetURL];
-            MPMediaItemArtwork *artImage = [song valueForProperty:MPMediaItemPropertyArtwork];
-            UIImage *artworkImage = [artImage imageWithSize:CGSizeMake(artImage.bounds.size.width, artImage.bounds.size.height)];
-            NSData *imgData = UIImagePNGRepresentation(artworkImage);
             NSNumber *duration = [song valueForProperty:MPMediaItemPropertyPlaybackDuration];
-            NSString *genre = [song valueForProperty:MPMediaItemPropertyGenre];
-            
-            NSLog(@"title = %@",title);
-            NSLog(@"albumTitle = %@",albumTitle);
-            NSLog(@"artist = %@",artist);
-            NSLog(@"songurl = %@",songurl);
-            
-            
+
             AVURLAsset *songURL = [AVURLAsset URLAssetWithURL:songurl options:nil];
             
             NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -138,12 +126,8 @@
                         
                         NSLog(@"AVAssetExportSessionStatusCompleted %@",audioURL);
                         [songInfo setObject:title forKey:@"title"];
-                        [songInfo setObject:albumTitle forKey:@"albumTitle"];
-                        [songInfo setObject:artist forKey:@"artist"];
                         [songInfo setObject:[songurl absoluteString] forKey:@"ipodurl"];
-                        [songInfo setObject:[imgData base64EncodedString] forKey:@"image"];
                         [songInfo setObject:duration forKey:@"duration"];
-                        [songInfo setObject:genre forKey:@"genre"];
                         [songInfo setObject:[audioURL absoluteString] forKey:@"exportedurl"];
                         [songInfo setObject:filename forKey:@"filename"];
                         
