@@ -177,6 +177,9 @@
 
 - (void)mediaPickerDidCancel:(MPMediaPickerController *)mediaPicker
 {
+    NSLog(@"CANCELLED");
+    plresult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Cancelled"];
+    [self.commandDelegate sendPluginResult:plresult callbackId:callbackID];
     [self.viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
