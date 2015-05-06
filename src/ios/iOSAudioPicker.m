@@ -86,13 +86,21 @@
             NSURL *songurl = [song valueForProperty:MPMediaItemPropertyAssetURL];
             NSNumber *duration = [song valueForProperty:MPMediaItemPropertyPlaybackDuration];
 
+            if(!songurl) {
+                NSLog(@"%@ has DRM", title);
+                plresult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"DRM-protected track. Please select another one!"];
+                [self.commandDelegate sendPluginResult:plresult callbackId:callbackID];
+                [self.viewController dismissViewControllerAnimated:YES completion:nil];
+                return;
+            }
+
             AVURLAsset *songURL = [AVURLAsset URLAssetWithURL:songurl options:nil];
             
             NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             
             NSString *documentDir = [path objectAtIndex:0];
             
-            //NSLog(@"Compatible Preset for selected Song = %@", [AVAssetExportSession exportPresetsCompatibleWithAsset:songURL]);
+            NSLog(@"Compatible Preset for selected Song = %@", [AVAssetExportSession exportPresetsCompatibleWithAsset:songURL]);
             
             AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:songURL presetName:AVAssetExportPresetAppleM4A];
             
